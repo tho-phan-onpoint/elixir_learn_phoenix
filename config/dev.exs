@@ -2,10 +2,10 @@ import Config
 
 # Configure your database
 config :elixir_learn_phoenix, ElixirLearnPhoenix.Repo,
-  username: "tho",
-  password: "123456789",
-  hostname: "localhost",
-  database: "elixir_learn_phoenix_dev",
+  username: System.get_env("DB_USERNAME") || "",
+  password: System.get_env("DB_PASSWORD") || "",
+  hostname: System.get_env("DB_HOST") || "",
+  database: System.get_env("DB_NAME") || "",
   stacktrace: true,
   show_sensitive_data_on_connection_error: true,
   pool_size: 10
