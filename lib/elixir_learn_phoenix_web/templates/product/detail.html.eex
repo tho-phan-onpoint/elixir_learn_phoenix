@@ -49,7 +49,9 @@
 
 
     <% else %>
-        Product does not exist or error
+        <div class="container mx-auto text-center bg-white shadow-md rounded pt-8 pb-4">
+            Product does not exist or error
+        </div>
     <% end %>
 
     <br/>

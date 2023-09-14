@@ -8,27 +8,39 @@ defmodule ElixirLearnPhoenixWeb.CrawlerService do
     Hound.start_session()
     navigate_to(url)
 
-    selectorProductListParent = ".product-list-cat"
-    selectorProductItem = ".product-item"
-    selectorProductItemName = ".product-name"
-    selectorProductItemThumbnailUrl = ".product-img a.thumb-img img"
-    selectorProductItemPrice = ".product-price"
-    selectorProductItemRating = "input[type=hidden]"
-    selectorProductItemSold = ".selled"
+    config = %{
+      selector_product_list_parent: ".product-list-cat",
+      selector_product_item: ".product-item",
+      selector_product_item_name: ".product-name",
+      selector_product_item_thumbnail_url: ".product-img a.thumb-img img",
+      selector_product_item_thumbnail_url_attr: "src",
+      selector_product_item_price: ".product-price",
+      selector_product_item_rating: "input[type=hidden]",
+      selector_product_item_rating_attr: "value",
+      selector_product_item_sold: ".selled"
+    }
 
     page_html = page_source()
 
     {:ok, document} = Floki.parse_document(page_html)
 
     document
-    |> Floki.find(selectorProductListParent)
-    |> Floki.find(selectorProductItem)
+    |> Floki.find(config[:selector_product_list_parent])
+    |> Floki.find(config[:selector_product_item])
     |> Enum.each(fn child_element ->
-      name = parse_name(child_element, selectorProductItemName)
-      thumbnail_url = parse_thumbnail_url(child_element, selectorProductItemThumbnailUrl, "src")
-      price = parse_price(child_element, selectorProductItemPrice)
-      sold = parse_sold(child_element, selectorProductItemSold)
-      rating = parse_rating(child_element, selectorProductItemRating, "value")
+      name = parse_name(child_element, config)
+      thumbnail_url = parse_thumbnail_url(child_element, config)
+      price = parse_price(child_element, config)
+      sold = parse_sold(child_element, config)
+      rating = parse_rating(child_element, config)
+
+      # configs = ElixirLearnPhoenix.Repo.all(ElixirLearnPhoenix.Config)
+      # |> Enum.map(
+      # #  parse
+      # product = %{parsed_data}
+      # )
+      # -> list products
+      # |> ElixirLearnPhoenix.Repo.insert_all()
 
       product = %ElixirLearnPhoenix.Product{
         name: name,
@@ -75,16 +87,16 @@ defmodule ElixirLearnPhoenixWeb.CrawlerService do
     |> String.trim()
   end
 
-  def parse_name(child_element, selector) do
-    get_string(child_element, selector)
+  def parse_name(child_element, config) do
+    get_string(child_element, config[:selector_product_item_name])
   end
 
-  def parse_thumbnail_url(child_element, selector, attr) do
-    get_attr(child_element, selector, attr)
+  def parse_thumbnail_url(child_element, config) do
+    get_attr(child_element, config[:selector_product_item_thumbnail_url], config[:selector_product_item_thumbnail_url_attr])
   end
 
-  def parse_price(child_element, selector) do
-    get_string(child_element, selector)
+  def parse_price(child_element, config) do
+    get_string(child_element, config[:selector_product_item_price])
     |> String.slice(0..-2)
     |> String.replace(".", "")
     |> Integer.parse()
@@ -94,8 +106,8 @@ defmodule ElixirLearnPhoenixWeb.CrawlerService do
     end
   end
 
-  def parse_rating(child_element, selector, attr) do
-    get_attr(child_element, selector, attr)
+  def parse_rating(child_element, config) do
+    get_attr(child_element, config[:selector_product_item_rating], config[:selector_product_item_rating_attr])
     |> Floki.text()
     |> String.trim()
     |> Float.parse()
@@ -105,9 +117,9 @@ defmodule ElixirLearnPhoenixWeb.CrawlerService do
     end
   end
 
-  def parse_sold(child_element, selector) do
+  def parse_sold(child_element, config) do
     pattern = ~r/\d+/
-    input_string = get_string(child_element, selector)
+    input_string = get_string(child_element, config[:selector_product_item_sold])
 
     Regex.run(pattern, input_string)
     |> Floki.text()
