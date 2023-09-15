@@ -6,7 +6,7 @@ defmodule ElixirLearnPhoenix.Product do
     field :name, :string
     field :price, :integer
     field :sold, :integer
-    field :rating, :float
+    field :rating, :string
     field :thumbnail_url, :string
 
     timestamps()

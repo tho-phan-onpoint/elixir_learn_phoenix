@@ -98,11 +98,6 @@ defmodule ElixirLearnPhoenixWeb.CrawlerService do
     get_attr(child_element, config[:selector_product_item_rating], config[:selector_product_item_rating_attr])
     |> Floki.text()
     |> String.trim()
-    |> Float.parse()
-    |> case do
-      {value, ""} -> value
-      _ -> 0.0
-    end
   end
 
   defp parse_sold(child_element, config) do

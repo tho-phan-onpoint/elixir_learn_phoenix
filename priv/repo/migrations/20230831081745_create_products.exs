@@ -7,7 +7,7 @@ defmodule ElixirLearnPhoenix.Repo.Migrations.CreateProducts do
       add :thumbnail_url, :string
       add :price, :integer
       add :sold, :integer
-      add :rating, :float
+      add :rating, :string
       timestamps()
     end
   end
