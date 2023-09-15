@@ -60,14 +60,14 @@ defmodule ElixirLearnPhoenixWeb.CrawlerService do
     end)
   end
 
-  def get_string(child_element, selector) do
+  defp get_string(child_element, selector) do
     child_element
     |> Floki.find(selector)
     |> Floki.text()
     |> String.trim()
   end
 
-  def get_attr(child_element, selector, attr) do
+  defp get_attr(child_element, selector, attr) do
     child_element
     |> Floki.find(selector)
     |> Floki.attribute(attr)
@@ -75,15 +75,15 @@ defmodule ElixirLearnPhoenixWeb.CrawlerService do
     |> String.trim()
   end
 
-  def parse_name(child_element, config) do
+  defp parse_name(child_element, config) do
     get_string(child_element, config[:selector_product_item_name])
   end
 
-  def parse_thumbnail_url(child_element, config) do
+  defp parse_thumbnail_url(child_element, config) do
     get_attr(child_element, config[:selector_product_item_thumbnail_url], config[:selector_product_item_thumbnail_url_attr])
   end
 
-  def parse_price(child_element, config) do
+  defp parse_price(child_element, config) do
     get_string(child_element, config[:selector_product_item_price])
     |> String.slice(0..-2)
     |> String.replace(".", "")
@@ -94,7 +94,7 @@ defmodule ElixirLearnPhoenixWeb.CrawlerService do
     end
   end
 
-  def parse_rating(child_element, config) do
+  defp parse_rating(child_element, config) do
     get_attr(child_element, config[:selector_product_item_rating], config[:selector_product_item_rating_attr])
     |> Floki.text()
     |> String.trim()
@@ -105,7 +105,7 @@ defmodule ElixirLearnPhoenixWeb.CrawlerService do
     end
   end
 
-  def parse_sold(child_element, config) do
+  defp parse_sold(child_element, config) do
     pattern = ~r/\d+/
     input_string = get_string(child_element, config[:selector_product_item_sold])
 
