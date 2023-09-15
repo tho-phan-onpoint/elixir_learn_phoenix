@@ -34,14 +34,6 @@ defmodule ElixirLearnPhoenixWeb.CrawlerService do
       sold = parse_sold(child_element, config)
       rating = parse_rating(child_element, config)
 
-      # configs = ElixirLearnPhoenix.Repo.all(ElixirLearnPhoenix.Config)
-      # |> Enum.map(
-      # #  parse
-      # product = %{parsed_data}
-      # )
-      # -> list products
-      # |> ElixirLearnPhoenix.Repo.insert_all()
-
       product = %ElixirLearnPhoenix.Product{
         name: name,
         thumbnail_url: thumbnail_url,
@@ -65,11 +57,7 @@ defmodule ElixirLearnPhoenixWeb.CrawlerService do
           })
           |> ElixirLearnPhoenix.Repo.update()
       end
-
-      IO.inspect(product, label: "product")
     end)
-
-    IO.inspect("done", label: "done")
   end
 
   def get_string(child_element, selector) do
