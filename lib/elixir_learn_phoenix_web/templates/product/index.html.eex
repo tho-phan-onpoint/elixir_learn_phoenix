@@ -12,17 +12,8 @@
             </div>
             <select name="sort" class="text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 right">
                 <option value="" disabled>Select an option</option>
-                <%= if @sort == "asc" do %>
-                    <option value="asc" selected>Price asc</option>
-                <% else %>
-                    <option value="asc">Price asc</option>
-                <% end %>
-
-                <%= if @sort == "desc" do %>
-                    <option value="desc" selected>Price desc</option>
-                <% else %>
-                    <option value="desc">Price desc</option>
-                <% end %>
+                <option value="asc" <%= if @sort == "asc", do: "selected", else: "" %>>Price asc</option>
+                <option value="desc" <%= if @sort == "desc", do: "selected", else: "" %>>Price desc</option>
             </select>
             <button
                 type="submit"
