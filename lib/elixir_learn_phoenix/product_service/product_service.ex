@@ -48,15 +48,11 @@ defmodule ElixirLearnPhoenix.ProductService do
 
   @spec detail_by_id(any) :: any
   def detail_by_id(id) do
-    try do
-      result = ElixirLearnPhoenix.Repo.get_by(ElixirLearnPhoenix.Product, id: id)
+    result = ElixirLearnPhoenix.Repo.get_by(ElixirLearnPhoenix.Product, id: id)
 
-      case result do
-        nil -> {:error, :resource_not_found}
-        _ -> {:ok, result}
-      end
-    rescue
-      Ecto.Query.CastError -> {:error, :resource_error}
+    case result do
+      nil -> {:error, :resource_not_found}
+      _ -> {:ok, result}
     end
   end
 end

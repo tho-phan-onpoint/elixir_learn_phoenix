@@ -15,12 +15,15 @@ defmodule ElixirLearnPhoenixWeb.ProductController do
     )
   end
 
-  def detail(conn, %{"id" => id}) when not is_nil(id) do
-    {status, p} = ElixirLearnPhoenix.ProductService.detail_by_id(id)
-
-    case status do
-      :ok -> render(conn, "detail.html", status: status, data: p)
-      :error -> render(conn, "detail.html", status: :not_found, data: nil)
+  @index_params_schema  %{
+    id: [type: :integer, number: [greater_than: 0]],
+  }
+  def detail(conn, params) do
+    with {:ok, better_params} <- Tarams.cast(params, @index_params_schema) do
+      {status, product} = ElixirLearnPhoenix.ProductService.detail_by_id(better_params[:id])
+        render(conn, "detail.html", status: status, data: product)
+    else
+        {:error, _errors} -> render(conn, "detail.html", status: :not_found, data: nil)
     end
   end
 end
