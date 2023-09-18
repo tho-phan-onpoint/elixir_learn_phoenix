@@ -8,7 +8,7 @@ defmodule ElixirLearnPhoenix.Repo.Migrations.CreateUsers do
       add :bio, :string
       add :number_of_pets, :integer
 
-      timestamps()
+      timestamps(default: fragment("NOW()"))
     end
   end
 end

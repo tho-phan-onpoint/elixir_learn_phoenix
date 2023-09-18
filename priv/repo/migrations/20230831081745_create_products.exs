@@ -8,7 +8,7 @@ defmodule ElixirLearnPhoenix.Repo.Migrations.CreateProducts do
       add :price, :integer
       add :sold, :integer
       add :rating, :string
-      timestamps()
+      timestamps(default: fragment("NOW()"))
     end
   end
 end

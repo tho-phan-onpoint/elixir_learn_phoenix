@@ -12,10 +12,16 @@ defmodule ElixirLearnPhoenix.Product do
     timestamps()
   end
 
+  @default_fields [
+    :id,
+    :inserted_at,
+    :updated_at
+  ]
+
   @doc false
   def changeset(product, attrs) do
     product
-    |> cast(attrs, [:name, :thumbnail_url, :price, :selled, :rating])
+    |> cast(attrs, __MODULE__.__schema__(:fields) -- @default_fields)
     |> validate_required([:name, :thumbnail_url, :price, :selled, :rating])
     |> unique_constraint(:name)
   end

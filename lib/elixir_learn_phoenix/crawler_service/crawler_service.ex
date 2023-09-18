@@ -24,40 +24,35 @@ defmodule ElixirLearnPhoenixWeb.CrawlerService do
 
     {:ok, document} = Floki.parse_document(page_html)
 
-    document
+    r = document
     |> Floki.find(config[:selector_product_list_parent])
     |> Floki.find(config[:selector_product_item])
-    |> Enum.each(fn child_element ->
-      name = parse_name(child_element, config)
-      thumbnail_url = parse_thumbnail_url(child_element, config)
-      price = parse_price(child_element, config)
-      sold = parse_sold(child_element, config)
-      rating = parse_rating(child_element, config)
+    |> Enum.map(fn child_element ->
+        name = parse_name(child_element, config)
+        thumbnail_url = parse_thumbnail_url(child_element, config)
+        price = parse_price(child_element, config)
+        sold = parse_sold(child_element, config)
+        rating = parse_rating(child_element, config)
 
-      product = %ElixirLearnPhoenix.Product{
-        name: name,
-        thumbnail_url: thumbnail_url,
-        price: price,
-        rating: rating,
-        sold: sold
-      }
-
-      existing_product = ElixirLearnPhoenix.Repo.get_by(ElixirLearnPhoenix.Product, name: name)
-
-      case existing_product do
-        nil ->
-          ElixirLearnPhoenix.Repo.insert(product)
-        _ ->
-          existing_product
-          |> Ecto.Changeset.change(%{
-            thumbnail_url: thumbnail_url,
-            price: price,
-            rating: rating,
-            sold: sold
-          })
-          |> ElixirLearnPhoenix.Repo.update()
+        %{
+          name: name,
+          thumbnail_url: thumbnail_url,
+          price: price,
+          rating: rating,
+          sold: sold
+        }
       end
+    )
+    |> Enum.chunk_every(200)
+    |> Enum.each(fn items ->
+        ElixirLearnPhoenix.Repo.insert_all(
+          ElixirLearnPhoenix.Product,
+          items,
+          on_conflict: {:replace_all_except, [:id, :name, :inserted_at]},
+          conflict_target: [:name]
+        )
     end)
+
   end
 
   defp get_string(child_element, selector) do
