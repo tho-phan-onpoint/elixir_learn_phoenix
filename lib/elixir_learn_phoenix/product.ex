@@ -4,6 +4,7 @@ defmodule ElixirLearnPhoenix.Product do
 
   schema "products" do
     field :name, :string
+    field :slug, :string
     field :price, :integer
     field :sold, :integer
     field :rating, :string
@@ -23,6 +24,6 @@ defmodule ElixirLearnPhoenix.Product do
     product
     |> cast(attrs, __MODULE__.__schema__(:fields) -- @default_fields)
     |> validate_required([:name, :thumbnail_url, :price, :selled, :rating])
-    |> unique_constraint(:name)
+    |> unique_constraint(:slug)
   end
 end

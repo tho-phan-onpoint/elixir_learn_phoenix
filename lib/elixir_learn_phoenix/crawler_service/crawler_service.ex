@@ -20,6 +20,7 @@ defmodule ElixirLearnPhoenixWeb.CrawlerService do
     |> Floki.find(selector_product_item)
     |> Enum.map(fn child_element ->
         name = parse_name(child_element)
+        slug = parse_slug(child_element)
         thumbnail_url = parse_thumbnail_url(child_element)
         price = parse_price(child_element)
         sold = parse_sold(child_element)
@@ -27,6 +28,7 @@ defmodule ElixirLearnPhoenixWeb.CrawlerService do
 
         %{
           name: name,
+          slug: slug,
           thumbnail_url: thumbnail_url,
           price: price,
           rating: rating,
@@ -39,8 +41,8 @@ defmodule ElixirLearnPhoenixWeb.CrawlerService do
         ElixirLearnPhoenix.Repo.insert_all(
           ElixirLearnPhoenix.Product,
           items,
-          on_conflict: {:replace_all_except, [:id, :name, :inserted_at]},
-          conflict_target: [:name]
+          on_conflict: {:replace_all_except, [:id, :slug, :inserted_at]},
+          conflict_target: [:slug]
         )
     end)
 
@@ -57,6 +59,7 @@ defmodule ElixirLearnPhoenixWeb.CrawlerService do
     child_element
     |> Floki.find(selector)
     |> Floki.attribute(attr)
+    |> List.first()
     |> Floki.text()
     |> String.trim()
   end
@@ -105,5 +108,14 @@ defmodule ElixirLearnPhoenixWeb.CrawlerService do
       _ -> 0
     end
     |> Kernel.*(1000)
+  end
+
+  defp parse_slug(child_element) do
+    selector_product_slug = ".product-item a"
+    selector_product_slug_attr = "href"
+    slug = get_attr(child_element, selector_product_slug, selector_product_slug_attr)
+    String.replace(slug, "https://concung.com/", "")
+
+    IO.inspect(slug, label: "slug")
   end
 end

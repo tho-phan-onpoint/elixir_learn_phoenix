@@ -7,7 +7,7 @@ defmodule ElixirLearnPhoenixWeb.CrawlerController do
 
   def crawl(conn, params) do
     # TODO valid input
-    ElixirLearnPhoenixWeb.CrawlerService.save_product_to_db(params["urlInput"])
+    ElixirLearnPhoenixWeb.CrawlerService.save_product_to_db(params["url"])
     redirect(conn, to: "/products")
   end
 end
