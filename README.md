@@ -3,7 +3,8 @@
 To start your Phoenix server:
 
   * Install dependencies with `mix deps.get`
-  * Change connection postgre database info in config file `./config/dev.exs`
+  * Run command `cp .env.sample .env`
+  * Change connection postgre database info in config file `.env`
   * Create and migrate your database with `mix ecto.setup`
   * Download TailwindCSS with `mix tailwind.install`
   * Install webdriver server `brew install --cask chromedriver` [Install guide](https://github.com/HashNuke/hound/wiki/Starting-a-webdriver-server)

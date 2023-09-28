@@ -1,0 +1,62 @@
+<h1 class="text-3xl font-bold text-center">
+  Product Detail
+</h1>
+
+<div class="container mx-auto px-48">
+    <%= if @status == :ok do %>
+        <div class="relative overflow-x-auto">
+            <div class="w-48 mx-auto">
+                <img src="<%= @data.thumbnail_url %>" alt="<%= @data.name %>">
+            </div>
+            <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                <tbody>
+                    <tr class="bg-white border-b">
+                        <th scope="row" class="px-6 py-4 font-medium whitespace-nowrap">
+                            Product name
+                        </th>
+                        <td class="px-6 py-4">
+                            <%= @data.name %>
+                        </td>
+                    </tr>
+                    <tr class="bg-white border-b">
+                        <th scope="row" class="px-6 py-4 font-medium whitespace-nowrap">
+                            Rating
+                        </th>
+                        <td class="px-6 py-4">
+                            <%= @data.rating %>
+                        </td>
+                    </tr>
+                    <tr class="bg-white border-b">
+                        <th scope="row" class="px-6 py-4 font-medium whitespace-nowrap">
+                            Sold
+                        </th>
+                        <td class="px-6 py-4">
+                            <%= @data.sold %>
+                        </td>
+                    </tr>
+                     <tr class="bg-white border-b">
+                        <th scope="row" class="px-6 py-4 font-medium whitespace-nowrap">
+                            Price
+                        </th>
+                        <td class="px-6 py-4">
+                            <%= @data.price %>đ
+                        </td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+
+
+    <% else %>
+        <div class="container mx-auto text-center bg-white shadow-md rounded pt-8 pb-4">
+            Product does not exist or error
+        </div>
+    <% end %>
+
+    <br/>
+    <br/>
+    <div class="text-center">
+        <a href="/products" type="button" class="rounded-full border-sky-500 text-blue-400">Go back product list</a>
+    </div>
+</div>

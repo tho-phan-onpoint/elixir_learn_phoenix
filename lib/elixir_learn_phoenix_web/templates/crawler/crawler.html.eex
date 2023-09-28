@@ -1,0 +1,13 @@
+<h1 class="text-3xl font-bold text-center">
+  Crawler
+</h1>
+
+<section class="container">
+    <form action="/crawler" method="post" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 flex flex-col justify-items-center items-center min-w-md max-w-lg mx-auto">
+        <input type="hidden" value="<%= Phoenix.Controller.get_csrf_token() %>" name="_csrf_token"/>
+        <input type="url" name="url" id="url" placeholder="Input crawl url" class="block w-full rounded-md border-0 py-1.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+        <button class="mt-2 py-2 px-4 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75">
+            Crawl
+        </button>
+    </form>
+</section>
